@@ -1,0 +1,44 @@
+{
+  "dataset": "wikitq",
+  "split": "dev",
+  "total_samples": 50,
+  "success_count": 46,
+  "correct_count": 23,
+  "success_rate": 0.92,
+  "correctness_rate": 0.46,
+  "results": [
+    {
+      "id": "nu-0",
+      "question": "which country had the most cyclists finish within the top 10?",
+      "gold_answer": "Italy",
+      "pred_answer": "ESP",
+      "success": true,
+      "correct": false,
+      "iterations": 2,
+      "final_code": "import pandas as pd\n\ndef answer(df: pd.DataFrame):\n    df.columns = ['Rank', 'Cyclist', 'Team', 'Time', 'UCI ProTour']\n    df['Country'] = df['Cyclist'].str.extract(r'\\((.*?)\\)')\n    cyclist_counts = df[pd.to_numeric(df['Rank'], errors='coerce').fillna(0).astype(int) <= 10].groupby('Country')['Cyclist'].count()\n    return cyclist_counts.idxmax()"
+    },
+    {
+      "id": "nu-2",
+      "question": "how long did it take for the new york americans to win the national cup after 1936?",
+      "gold_answer": "17 years",
+      "pred_answer": null,
+      "success": true,
+      "correct": true,
+      "iterations": 2,
+      "final_code": "import pandas as pd\n\ndef answer(df: pd.DataFrame):\n    df.columns = ['Year', 'Division', 'League', 'Reg. Season', 'Playoffs', 'National Cup']\n    \n    # Convert Year column to numeric\n    df['Year'] = pd.to_numeric(df['Year'], errors='coerce')\n    \n    # Find the first occurrence of \"Champion\" after 1936\n    first_champion_after_1936 = df[(df['National Cup'] == '\"Champion\"')]['Year'].loc[lambda x: x > 1936].min()\n    \n    # If not found, return None\n    if pd.isna(first_champion_after_1936):\n        return None\n    \n    # Calculate the difference in years from 1936\n    years_difference = first_champion_after_1936 - 1936\n    \n    return years_difference"
+    },
+    {
+      "id": "nu-4",
+      "question": "what is the number of 1st place finishes across all events?",
+      "gold_answer": "17",
+      "pred_answer": 0,
+      "success": true,
+      "correct": false,
+      "iterations": 1,
+      "final_code": "import pandas as pd\n\ndef answer(df: pd.DataFrame):\n    df.columns = ['Date', 'Competition', 'Location', 'Country', 'Event', 'Placing', 'Rider', 'Nationality']\n    first_places = df[df['Placing'] == '1'].shape[0]\n    return first_places"
+    },
+    {
+      "id": "nu-6",
+      "question": "what is the total number of films with the language of kannada listed?",
+      "gold_answer": "15",
+      "pred_answer": 
