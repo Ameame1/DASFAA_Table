@@ -1,0 +1,36 @@
+{
+  "summary": {
+    "total_samples": 100,
+    "skipped": 0,
+    "valid_samples": 100,
+    "execution_success": 2,
+    "execution_rate": 2.0,
+    "correct": 1,
+    "accuracy": 1.0,
+    "average_iterations": 1.0
+  },
+  "results": [
+    {
+      "sample_id": 1,
+      "statement": "The revenue increased every year from 2020 to 2022.",
+      "ground_truth": true,
+      "predicted": true,
+      "predicted_raw": "True",
+      "correct": true,
+      "execution_success": true,
+      "iterations": 1,
+      "error": null
+    },
+    {
+      "sample_id": 2,
+      "statement": "The profit decreased in 2021.",
+      "ground_truth": false,
+      "predicted": true,
+      "predicted_raw": "True",
+      "correct": false,
+      "execution_success": true,
+      "iterations": 1,
+      "error": null
+    }
+  ]
+}

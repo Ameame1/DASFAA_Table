@@ -34,7 +34,10 @@ class TableQASystem:
         max_iterations: int = 3,
         timeout: int = 5,
         device: str = "cuda",
-        load_in_8bit: bool = False
+        load_in_8bit: bool = False,
+        use_ails_prompt: bool = False,
+        use_ails_postprocessor: bool = False,
+        few_shot_examples: Optional[List[Dict[str, Any]]] = None
     ):
         """
         Initialize Table QA system
@@ -47,9 +50,19 @@ class TableQASystem:
             timeout: Code execution timeout
             device: Device for model
             load_in_8bit: Use 8-bit quantization
+            use_ails_prompt: Whether to use AILS-NTUA style prompts
+            use_ails_postprocessor: Whether to use AILS-NTUA post-processor
+            few_shot_examples: Few-shot examples for AILS prompting
         """
         # Initialize components
-        self.code_generator = QwenCodeGenerator(model_name, device, load_in_8bit)
+        self.code_generator = QwenCodeGenerator(
+            model_name,
+            device,
+            load_in_8bit,
+            use_ails_prompt=use_ails_prompt,
+            use_ails_postprocessor=use_ails_postprocessor,
+            few_shot_examples=few_shot_examples
+        )
         self.code_executor = SecureCodeExecutor(timeout=timeout)
         self.diagnostic_system = HierarchicalDiagnosticSystem(use_grpo, grpo_model_path)
 

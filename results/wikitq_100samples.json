@@ -1,0 +1,13 @@
+{
+  "summary": {
+    "total_samples": 100,
+    "skipped": 0,
+    "valid_samples": 100,
+    "execution_success": 93,
+    "execution_rate": 93.0,
+    "correct": 25,
+    "accuracy": 25.0,
+    "average_iterations": 1.35
+  },
+  "note": "Results extracted from evaluation log. Full per-sample results not available due to JSON serialization error during original run."
+}

@@ -1,0 +1,3 @@
+[submodule "baselines/sota_methods/ails_ntua"]
+	path = baselines/sota_methods/ails_ntua
+	url = https://github.com/andrewevag/SemEval2025-Task8-TQA.git

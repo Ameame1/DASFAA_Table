@@ -1,0 +1,95 @@
+{
+  "summary": {
+    "total_samples": 20,
+    "skipped": 0,
+    "valid_samples": 20,
+    "execution_success": 20,
+    "execution_rate": 100.0,
+    "correct": 6,
+    "accuracy": 30.0,
+    "average_iterations": 1.85
+  },
+  "results": [
+    {
+      "sample_id": 1,
+      "question": "Is the most favorited author mainly communicating in Spanish?",
+      "ground_truth": "True",
+      "predicted": false,
+      "correct": false,
+      "execution_success": true,
+      "iterations": 1,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "boolean",
+      "trajectory": []
+    },
+    {
+      "sample_id": 2,
+      "question": "Does the author with the longest name post mainly original content?",
+      "ground_truth": "False",
+      "predicted": null,
+      "correct": false,
+      "execution_success": true,
+      "iterations": 2,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "boolean",
+      "trajectory": []
+    },
+    {
+      "sample_id": 3,
+      "question": "Is there an author who received no retweets for any of their posts?",
+      "ground_truth": "True",
+      "predicted": null,
+      "correct": false,
+      "execution_success": true,
+      "iterations": 2,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "boolean",
+      "trajectory": []
+    },
+    {
+      "sample_id": 4,
+      "question": "Are there any posts that do not contain any links?",
+      "ground_truth": "True",
+      "predicted": null,
+      "correct": false,
+      "execution_success": true,
+      "iterations": 2,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "boolean",
+      "trajectory": []
+    },
+    {
+      "sample_id": 5,
+      "question": "How many unique authors are in the dataset?",
+      "ground_truth": "20",
+      "predicted": 20,
+      "correct": true,
+      "execution_success": true,
+      "iterations": 2,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "number",
+      "trajectory": []
+    },
+    {
+      "sample_id": 6,
+      "question": "What is the length of the longest post (based on the number of words)?",
+      "ground_truth": "49",
+      "predicted": null,
+      "correct": false,
+      "execution_success": true,
+      "iterations": 2,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "number",
+      "trajectory": []
+    },
+    {
+      "sample_id": 7,
+      "question": "What is the total number of retweets received by all authors in the dataset?",
+      "ground_truth": "2",
+      "predicted": 

@@ -1,0 +1,41 @@
+[
+  {
+    "config": "Baseline",
+    "execution_success": 9,
+    "exec_rate": 90.0,
+    "correct": 2,
+    "acc_rate": 20.0,
+    "avg_iterations": 0.0,
+    "results": [
+      {
+        "sample_id": 1,
+        "question": "which country had the most cyclists finish within the top 10?",
+        "ground_truth": "Italy",
+        "predicted": null,
+        "correct": false,
+        "execution_success": false,
+        "iterations": 0
+      },
+      {
+        "sample_id": 2,
+        "question": "how long did it take for the new york americans to win the national cup after 1936?",
+        "ground_truth": "17 years",
+        "predicted": null,
+        "correct": false,
+        "execution_success": true,
+        "iterations": 0
+      },
+      {
+        "sample_id": 3,
+        "question": "what is the number of 1st place finishes across all events?",
+        "ground_truth": "17",
+        "predicted": 0,
+        "correct": false,
+        "execution_success": true,
+        "iterations": 0
+      },
+      {
+        "sample_id": 4,
+        "question": "what is the total number of films with the language of kannada listed?",
+        "ground_truth": "15",
+        "predicted": 

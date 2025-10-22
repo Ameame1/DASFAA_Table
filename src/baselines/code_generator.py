@@ -6,8 +6,25 @@ Generates Python code for table question answering
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import pandas as pd
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 import logging
+import sys
+from pathlib import Path
+
+# Add project root to path for imports
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+
+from src.baselines.ails_prompt_generator import (
+    generate_ails_prompt,
+    generate_ails_prompt_incomplete,
+    generate_ails_fewshot_prompt,
+    AILS_FEWSHOT_EXAMPLES
+)
+from src.baselines.ails_postprocessor import (
+    TillReturnPostProcessor,
+    clean_model_output
+)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -22,7 +39,10 @@ class QwenCodeGenerator:
         self,
         model_name: str = "Qwen/Qwen2.5-7B-Instruct",
         device: str = "cuda" if torch.cuda.is_available() else "cpu",
-        load_in_8bit: bool = False
+        load_in_8bit: bool = False,
+        use_ails_prompt: bool = False,
+        use_ails_postprocessor: bool = False,
+        few_shot_examples: Optional[List[Dict[str, Any]]] = None
     ):
         """
         Initialize code generator
@@ -31,13 +51,33 @@ class QwenCodeGenerator:
             model_name: HuggingFace model name
             device: Device to load model on
             load_in_8bit: Whether to load model in 8-bit precision
+            use_ails_prompt: Whether to use AILS-NTUA style prompts
+            use_ails_postprocessor: Whether to use AILS-NTUA post-processor
+                (extracts code until first return, assembles complete function)
+            few_shot_examples: List of few-shot examples (if using AILS few-shot)
         """
         self.model_name = model_name
         self.device = device
         self.load_in_8bit = load_in_8bit
+        self.use_ails_prompt = use_ails_prompt
+        self.use_ails_postprocessor = use_ails_postprocessor
+        self.few_shot_examples = few_shot_examples or []
+
+        # Initialize post-processor if enabled
+        if self.use_ails_postprocessor:
+            self.postprocessor = TillReturnPostProcessor(
+                base_indent=4,
+                return_indent=4,
+                first_prefix="    # The columns used to answer the question: "  # Official AILS prefix
+            )
+        else:
+            self.postprocessor = None
 
         logger.info(f"Loading model: {model_name}")
         logger.info(f"Device: {device}")
+        logger.info(f"AILS Prompt: {use_ails_prompt}")
+        logger.info(f"AILS Post-processor: {use_ails_postprocessor}")
+        logger.info(f"Few-shot examples: {len(self.few_shot_examples)}")
 
         # Load tokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(
@@ -103,6 +143,24 @@ class QwenCodeGenerator:
         generated_text = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
         code = self._extract_code(generated_text, prompt)
 
+        # Apply post-processing if enabled
+        if self.use_ails_postprocessor and self.postprocessor:
+            logger.info("Applying AILS post-processor (extract until return)")
+            try:
+                # Clean the model output
+                cleaned_code = clean_model_output(code)
+
+                # Apply post-processor: extract until return + assemble function
+                columns = list(table.columns)
+                code = self.postprocessor.process(
+                    model_output=cleaned_code,
+                    columns=columns,
+                    function_name="answer"
+                )
+                logger.info("Post-processing successful")
+            except Exception as e:
+                logger.warning(f"Post-processing failed: {e}. Using raw code.")
+
         return code
 
     def generate_from_repair_prompt(
@@ -141,11 +199,49 @@ class QwenCodeGenerator:
     def _create_prompt(self, table: pd.DataFrame, question: str) -> str:
         """
         Create initial code generation prompt
-        Improved with techniques from AILS-NTUA:
+
+        If use_ails_prompt is True, uses AILS-NTUA style prompts with:
+        - Detailed schema information
+        - Few-shot examples (if provided)
+        - Chain-of-Thought reasoning
+
+        Otherwise, uses improved baseline with:
         - Column selection
         - Unique values
         - Function template
         """
+        if self.use_ails_prompt:
+            # Use AILS-NTUA style prompt
+            if self.use_ails_postprocessor:
+                # INCOMPLETE prompt (function header only) for post-processing
+                # This is the CORRECT way to use AILS with Coder models
+                # Check if we should use few-shot
+                use_fewshot = len(self.few_shot_examples) > 0
+                prompt = generate_ails_prompt_incomplete(
+                    question=question,
+                    df=table,
+                    num_rows=5,
+                    use_fewshot=use_fewshot,
+                    num_shots=min(len(self.few_shot_examples), 3) if use_fewshot else 0
+                )
+            elif self.few_shot_examples:
+                # Few-shot prompt with examples (complete)
+                prompt = generate_ails_fewshot_prompt(
+                    question=question,
+                    df=table,
+                    examples=self.few_shot_examples,
+                    num_rows=5
+                )
+            else:
+                # Zero-shot AILS prompt (complete)
+                prompt = generate_ails_prompt(
+                    question=question,
+                    df=table,
+                    num_rows=5
+                )
+            return prompt
+
+        # Original improved baseline prompt
         # 1. Column selection (simple keyword matching)
         question_lower = question.lower()
         question_words = set(question_lower.split())

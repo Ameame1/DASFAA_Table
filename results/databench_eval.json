@@ -1,0 +1,82 @@
+{
+  "summary": {
+    "total_samples": 5,
+    "skipped": 0,
+    "valid_samples": 5,
+    "execution_success": 5,
+    "execution_rate": 100.0,
+    "correct": 3,
+    "accuracy": 60.0,
+    "average_iterations": 1.0
+  },
+  "results": [
+    {
+      "sample_id": 1,
+      "question": "Is the most favorited author mainly communicating in Spanish?",
+      "ground_truth": "True",
+      "predicted": true,
+      "correct": true,
+      "execution_success": true,
+      "iterations": 1,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "boolean",
+      "trajectory": []
+    },
+    {
+      "sample_id": 2,
+      "question": "Does the author with the longest name post mainly original content?",
+      "ground_truth": "False",
+      "predicted": [
+        " 🇪🇸 Bearded.LocutusBorg  🇮🇪 🏳️‍🌈",
+        false
+      ],
+      "correct": false,
+      "execution_success": true,
+      "iterations": 1,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "boolean",
+      "trajectory": []
+    },
+    {
+      "sample_id": 3,
+      "question": "Is there an author who received no retweets for any of their posts?",
+      "ground_truth": "True",
+      "predicted": true,
+      "correct": true,
+      "execution_success": true,
+      "iterations": 1,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "boolean",
+      "trajectory": []
+    },
+    {
+      "sample_id": 4,
+      "question": "Are there any posts that do not contain any links?",
+      "ground_truth": "True",
+      "predicted": 20,
+      "correct": false,
+      "execution_success": true,
+      "iterations": 1,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "boolean",
+      "trajectory": []
+    },
+    {
+      "sample_id": 5,
+      "question": "How many unique authors are in the dataset?",
+      "ground_truth": "20",
+      "predicted": 20,
+      "correct": true,
+      "execution_success": true,
+      "iterations": 1,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "number",
+      "trajectory": []
+    }
+  ]
+}

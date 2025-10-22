@@ -1,0 +1,43 @@
+{
+  "summary": {
+    "total_samples": 100,
+    "skipped": 0,
+    "valid_samples": 100,
+    "execution_success": 96,
+    "execution_rate": 96.0,
+    "correct": 67,
+    "accuracy": 67.0,
+    "average_iterations": 1.1979166666666667
+  },
+  "results": [
+    {
+      "sample_id": 1,
+      "question": "Is the most favorited author mainly communicating in Spanish?",
+      "ground_truth": "True",
+      "predicted": true,
+      "correct": true,
+      "execution_success": true,
+      "iterations": 1,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "boolean",
+      "trajectory": []
+    },
+    {
+      "sample_id": 2,
+      "question": "Does the author with the longest name post mainly original content?",
+      "ground_truth": "False",
+      "predicted": false,
+      "correct": true,
+      "execution_success": true,
+      "iterations": 1,
+      "error": null,
+      "dataset": "050_ING",
+      "type": "boolean",
+      "trajectory": []
+    },
+    {
+      "sample_id": 3,
+      "question": "Is there an author who received no retweets for any of their posts?",
+      "ground_truth": "True",
+      "predicted": 
